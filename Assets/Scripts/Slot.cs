@@ -6,33 +6,30 @@ using UnityEngine.UI;
 public class Slot : MonoBehaviour
 {
     public bool isSpinning;
-    public float spinSpeed;
     public float counter; 
-    public string[] symbols; 
     public Text symbolText;
 
 
     private void Start()
     {
         isSpinning = true;
-        spinSpeed = 120; 
-        counter = spinSpeed;
-        symbols = new string[] { "#", "!", "@", "£", "$", "%", "&" };
-        symbolText.text = symbols[0];
+        counter = SlotConstants.spinSpeed;
+        symbolText.text = SlotConstants.symbols[0];
+        Application.targetFrameRate = SlotConstants.frameRate;
     }
 
     private void FixedUpdate()
     {
         if (isSpinning)
         {
-            if (counter > 0)
+            if (counter <= 0)
             {
-                counter--;
-            }
-            int index = System.Array.IndexOf(symbols, symbolText.text);
-            symbolText.text = index < symbols.Length - 1 ? symbols[index + 1] : symbols[0];
+                int index = System.Array.IndexOf(SlotConstants.symbols, symbolText.text);
+                symbolText.text = index < SlotConstants.symbols.Length - 1 ? SlotConstants.symbols[index + 1] : SlotConstants.symbols[0];
 
-            counter = spinSpeed;
+                counter = SlotConstants.spinSpeed;
+            }
+            counter--;
         }
     }
 }
