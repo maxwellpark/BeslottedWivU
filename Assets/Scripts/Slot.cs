@@ -12,6 +12,11 @@ public class Slot : MonoBehaviour
 
     private void Start()
     {
+        Init();
+    }
+
+    private void Init()
+    {
         isSpinning = true;
         counter = SlotConstants.spinSpeed;
         symbolText.text = SlotConstants.symbols[0];
