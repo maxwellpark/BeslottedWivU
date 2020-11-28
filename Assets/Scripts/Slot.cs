@@ -14,7 +14,8 @@ public class Slot : MonoBehaviour
 
     private void Start()
     {
-        spinSpeed = 256; 
+        isSpinning = true;
+        spinSpeed = 120; 
         counter = spinSpeed;
         symbols = new string[] { "#", "!", "@", "£", "$", "%", "&" };
         symbolText.text = symbols[0];
