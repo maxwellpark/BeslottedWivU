@@ -23,6 +23,20 @@ public class Reel : MonoBehaviour
         Application.targetFrameRate = SlotConstants.frameRate;
     }
 
+    private void ToggleState()
+    {
+        counter = SlotConstants.spinSpeed;
+        isSpinning = !isSpinning;
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            ToggleState();
+        }
+    }
+
     private void FixedUpdate()
     {
         if (isSpinning)
