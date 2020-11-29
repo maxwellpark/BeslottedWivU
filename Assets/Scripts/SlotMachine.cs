@@ -1,11 +1,15 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class SlotMachine : MonoBehaviour
 {
     public Reel[] reels;
     private IEnumerator enumerator;
+
+    public static event Action<bool> onReelsStopped; 
 
     void Start()
     {
@@ -32,6 +36,12 @@ public class SlotMachine : MonoBehaviour
         }
     }
 
+    private bool SymbolsMatch()
+    {
+        string symbolToMatch = reels[0].symbolText.text;
+        return reels.All(s => s.Equals(symbolToMatch));
+    }
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Mouse0))
@@ -50,8 +60,7 @@ public class SlotMachine : MonoBehaviour
                 if (reel.Equals(reels[reels.Length -1]))
                 {
                     enumerator.Reset();
-
-                    // Todo: check if 3 symbols match
+                    onReelsStopped?.Invoke(SymbolsMatch());
                 }
             }
         }
