@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -46,6 +45,8 @@ public class SlotMachine : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
+            // Todo: determine whether to start all based on 
+            // the current enumerator value 
             if (AllStopped())
             {
                 StartAll();
