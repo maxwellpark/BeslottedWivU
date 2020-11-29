@@ -28,7 +28,7 @@ public class SlotMachine : MonoBehaviour
     {
         for (int i = 0; i < reels.Length; i++)
         {
-            reels[i].isSpinning = true; 
+            reels[i].ToggleState(); 
         }
     }
 
@@ -36,16 +36,23 @@ public class SlotMachine : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            Debug.Log("Rator = " + enumerator);
-
             if (AllStopped())
             {
                 StartAll();
-                enumerator.Reset();
+                enumerator.MoveNext();
             }
             else
             {
+                Reel reel = enumerator.Current as Reel;
+                reel.ToggleState();
+                enumerator.MoveNext();
 
+                if (reel.Equals(reels[reels.Length -1]))
+                {
+                    enumerator.Reset();
+
+                    // Todo: check if 3 symbols match
+                }
             }
         }
     }

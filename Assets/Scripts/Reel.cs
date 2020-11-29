@@ -10,31 +10,23 @@ public class Reel : MonoBehaviour
     public Text symbolText;
 
 
-    private void Start()
+    private void Awake()
     {
         Init();
     }
 
     private void Init()
     {
-        isSpinning = true;
+        isSpinning = false;
         counter = SlotConstants.spinSpeed;
         symbolText.text = SlotConstants.symbols[0];
         Application.targetFrameRate = SlotConstants.frameRate;
     }
 
-    private void ToggleState()
+    public void ToggleState()
     {
         counter = SlotConstants.spinSpeed;
         isSpinning = !isSpinning;
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Mouse0))
-        {
-            ToggleState();
-        }
     }
 
     private void FixedUpdate()
