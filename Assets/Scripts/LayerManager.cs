@@ -42,6 +42,7 @@ public class LayerManager : MonoBehaviour
 
     // Todo: assign layers below in the init layers for loop 
     // Why are they always null with current solution?
+    // Shouldn't need to wait, as they are reference types 
     private void SetLayersBelow()
     {
         for (int i = 0; i < layers.Length; i++)
@@ -55,7 +56,6 @@ public class LayerManager : MonoBehaviour
                 Debug.Log(ex); 
                 layers[i].layerBelow = null; 
             }
-
         }
     }
 
@@ -89,8 +89,10 @@ public class LayerManager : MonoBehaviour
 
     private bool LayerIsDestroyed()
     {
-        Debug.Log("Active layer length: " + activeLayer.reels.Length);
-        return activeLayer.reels.Length <= 0; 
+        return activeLayer.reels.All(r => r.symbolText.color.Equals(Color.red));
+
+        //Debug.Log("Active layer length: " + activeLayer.reels.Length);
+        //return activeLayer.reels.Length <= 0; 
     }
 
     private void MoveToNextLayer()
