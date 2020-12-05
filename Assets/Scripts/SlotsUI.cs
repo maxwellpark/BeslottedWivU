@@ -29,18 +29,18 @@ public class SlotsUI : MonoBehaviour
     private void InitLayerGroups()
     {
         layerGroups = new GameObject[SlotConstants.layerCount];
-        for (int i = 0; i < layerGroups.Length; i++)
-        {
-            layerGroups[i] = Instantiate(layerGroupPrefab, transform);
-            layerGroups[i].name = "Layer Group " + i + 1.ToString();
 
-            GameObject newIndicator = Instantiate(indicatorPrefab, layerGroups[i].transform);
+        for (int i = 0; i < layerManager.layers.Length; i++)
+        {
+            layerGroups[i] = layerManager.layers[i].gameObject;
+            layerGroups[i].transform.parent = transform; 
+
+            GameObject newIndicator = Instantiate(indicatorPrefab, layerManager.layers[i].transform);
             newIndicator.name = "Indicator " + i + 1.ToString();
 
             for (int j = 0; j < layerManager.layers[i].reels.Length; j++)
             {
-                GameObject newReel = Instantiate(reelPrefab, layerGroups[i].transform);
-                newReel.name = "Reel " + j + 1.ToString();
+                layerManager.layers[i].reels[j].transform.parent = layerGroups[i].transform;
             }
         }
         layerGroups[0].GetComponentInChildren<Text>().text = "->";
