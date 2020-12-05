@@ -3,8 +3,9 @@ using System.Collections;
 using System.Linq;
 using UnityEngine;
 
-// Todo: make this class handle higher-level operations 
+// Todo: make this class handle higher-level operations. 
 // LayerManager has superseded it.
+// Remove redundant code. 
 public class SlotMachine : MonoBehaviour
 {
     public Reel[] reels;

@@ -17,7 +17,6 @@ public class LayerManager : MonoBehaviour
     private void Awake()
     {
         InitLayers();
-        activeLayer = layers[0];
         enumerator = activeLayer.reels.GetEnumerator();
     }
 
@@ -28,18 +27,40 @@ public class LayerManager : MonoBehaviour
         for (int i = 0; i < layers.Length; i++)
         {
             GameObject newLayerObject = Instantiate(layerPrefab);
-            newLayerObject.name = "Layer " + i + 1.ToString();
+            newLayerObject.name = "Layer " + (i + 1).ToString();
 
             Layer newLayer = newLayerObject.GetComponent<Layer>();
-            newLayer.layerBelow = i < layers.Length - 1 ? layers[i + 1] : null;
+            //newLayer.layerBelow = i < layers.Length - 1 ? layers[i + 1] : null;
             layers[i] = newLayer;
             
             newLayer.InitReels();
         }
+
+        SetLayersBelow();
+        activeLayer = layers[0];
     }
 
-    // Todo: rename to AllReelsStopped and move elsewhere
-    private bool AllStopped()
+    // Todo: assign layers below in the init layers for loop 
+    // Why are they always null with current solution?
+    private void SetLayersBelow()
+    {
+        for (int i = 0; i < layers.Length; i++)
+        {
+            try
+            {
+                layers[i].layerBelow = layers[i + 1];
+            }
+            catch (IndexOutOfRangeException ex)
+            {
+                Debug.Log(ex); 
+                layers[i].layerBelow = null; 
+            }
+
+        }
+    }
+
+    // Todo: move reel start-stop logic elsewhere
+    private bool AllReelsStopped()
     {
         for (int i = 0; i < activeLayer.reels.Length; i++)
         {
@@ -51,7 +72,7 @@ public class LayerManager : MonoBehaviour
         return true;
     }
 
-    private void StartAll()
+    private void StartAllReels()
     {
         for (int i = 0; i < activeLayer.reels.Length; i++)
         {
@@ -86,9 +107,9 @@ public class LayerManager : MonoBehaviour
         {
             // Todo: determine whether to start all based on 
             // the current enumerator value 
-            if (AllStopped())
+            if (AllReelsStopped())
             {
-                StartAll();
+                StartAllReels();
                 enumerator.MoveNext();
             }
             else
@@ -104,7 +125,7 @@ public class LayerManager : MonoBehaviour
                     onReelsStopped?.Invoke(SymbolsMatch());
 
                     // Destroy any matching symbols after each spin round 
-                    activeLayer.DestroyReelsBelow();
+                    activeLayer.DestroyMatchingSymbols();
 
                     if (LayerIsDestroyed())
                     {

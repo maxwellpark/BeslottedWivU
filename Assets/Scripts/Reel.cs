@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class Reel : MonoBehaviour
 {
     public bool isSpinning;
+    public bool isDestroyed; 
     public float counter; 
     public Text symbolText;
 
@@ -23,7 +24,7 @@ public class Reel : MonoBehaviour
 
     public void HandleSpin()
     {
-        if (isSpinning)
+        if (isSpinning && !isDestroyed)
         {
             if (counter <= 0)
             {
@@ -40,6 +41,6 @@ public class Reel : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //HandleSpin();
+        HandleSpin();
     }
 }

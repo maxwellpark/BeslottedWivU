@@ -25,7 +25,6 @@ public class SlotsUI : MonoBehaviour
         SlotMachine.onReelsStopped += UpdateFeedbackText;
     }
 
-    // Todo: init the reels elsewhere (only init UI elements) 
     private void InitLayerGroups()
     {
         layerGroups = new GameObject[SlotConstants.layerCount];
@@ -36,7 +35,7 @@ public class SlotsUI : MonoBehaviour
             layerGroups[i].transform.parent = transform; 
 
             GameObject newIndicator = Instantiate(indicatorPrefab, layerManager.layers[i].transform);
-            newIndicator.name = "Indicator " + i + 1.ToString();
+            newIndicator.name = "Indicator " + (i + 1).ToString();
 
             for (int j = 0; j < layerManager.layers[i].reels.Length; j++)
             {

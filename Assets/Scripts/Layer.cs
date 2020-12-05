@@ -29,6 +29,8 @@ public class Layer : MonoBehaviour
     // Todo: return only the current column?
     public Reel[] GetMatchingSymbolsUnderneath()
     {
+        LogLayerElements(reels);
+
         Reel[] matchingReels = new Reel[] { };
 
         if (layerBelow != null)
@@ -41,6 +43,7 @@ public class Layer : MonoBehaviour
                 }
             }
         }
+        Debug.Log("Matching reels count: " + matchingReels.Length);
         return matchingReels; 
     }
 
@@ -55,8 +58,34 @@ public class Layer : MonoBehaviour
 
         for (int i = 0; i < matchingReels.Length; i++)
         {
-            Destroy(reels[i].transform);
-            Debug.Log(layerBelow.reels.Length);
+            int index = System.Array.IndexOf(reels, matchingReels[i]);
+            Destroy(reels[index].transform);
+            Debug.Log("Layer below length: " + layerBelow.reels.Length);
+        }
+    }
+
+    // Temporary method until we figure out a UI solution 
+    // for destroying the game objects themselves 
+    public void DestroyMatchingSymbols()
+    {
+        if (layerBelow != null)
+        {
+            for (int i = 0; i < reels.Length; i++)
+            {
+                if (reels[i].symbolText.text.Equals(layerBelow.reels[i].symbolText.text))
+                {
+                    reels[i].isDestroyed = true;
+                    reels[i].symbolText.color = Color.red;
+                }
+            }
+        }
+    }
+
+    private void LogLayerElements(Reel[] reels)
+    {
+        for (int i = 0; i < reels.Length; i++)
+        {
+            Debug.Log(reels[i]);
         }
     }
 }
