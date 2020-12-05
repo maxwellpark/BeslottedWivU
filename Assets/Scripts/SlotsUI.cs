@@ -6,7 +6,8 @@ public class SlotsUI : MonoBehaviour
     public LayerManager layerManager;
 
     public GameObject layerGroupPrefab; 
-    public GameObject[] layerGroups; 
+    public GameObject[] layerGroups;
+    public GameObject reelPrefab; 
 
     public Text feedbackText;
 
@@ -19,7 +20,7 @@ public class SlotsUI : MonoBehaviour
 
     private void Start()
     {
-
+        InitLayerGroups();
         SlotMachine.onReelsStopped += UpdateFeedbackText;
     }
 
@@ -30,6 +31,12 @@ public class SlotsUI : MonoBehaviour
         {
             layerGroups[i] = Instantiate(layerGroupPrefab, transform);
             layerGroups[i].name = "Layer Group " + i + 1.ToString();
+
+            for (int j = 0; j < layerManager.layers[i].reels.Length; j++)
+            {
+                GameObject newReel = Instantiate(reelPrefab, layerGroups[i].transform);
+                newReel.name = "Reel " + j + 1.ToString();
+            }
         }
 
     }
