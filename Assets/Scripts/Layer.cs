@@ -7,7 +7,8 @@ public class Layer : MonoBehaviour
 
     public bool isActive;
 
-    public Reel[] GetMatchesUnderneath()
+    // Todo: return only the current column?
+    public Reel[] GetMatchingSymbolsUnderneath()
     {
         Reel[] matchingReels = new Reel[] { };
 
@@ -21,8 +22,15 @@ public class Layer : MonoBehaviour
         return matchingReels;
     }
 
-    public void DestroyReelsBelow(Reel[] matchingReels) 
+    public void DestroyReelsBelow() 
     {
+        Reel[] matchingReels = GetMatchingSymbolsUnderneath();
+
+        if (matchingReels.Length <= 0)
+        {
+            return; 
+        }
+
         for (int i = 0; i < matchingReels.Length; i++)
         {
             Destroy(reels[i].transform);

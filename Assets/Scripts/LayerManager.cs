@@ -57,8 +57,10 @@ public class LayerManager : MonoBehaviour
     private void MoveToNextLayer()
     {
         activeLayer = layers[Array.IndexOf(layers, activeLayer) + 1];
+        // Todo: fire event that updates the arrow indicator in the UI
     }
 
+    // Todo: encapsulate more of this logic 
     private void HandleSpin()
     {
         if (Input.GetKeyDown(KeyCode.Mouse0))
@@ -76,12 +78,19 @@ public class LayerManager : MonoBehaviour
                 reel.ToggleState();
                 enumerator.MoveNext();
 
+                // Check if the last reel in the sequence has been stopped 
                 if (reel.Equals(activeLayer.reels[activeLayer.reels.Length - 1]))
                 {
                     enumerator.Reset();
                     onReelsStopped?.Invoke(SymbolsMatch());
 
+                    // Destroy any matching symbols after each spin round 
+                    activeLayer.DestroyReelsBelow();
 
+                    if (LayerIsDestroyed())
+                    {
+                        MoveToNextLayer();
+                    }
                 }
             }
         }
