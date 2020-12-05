@@ -9,15 +9,14 @@ public class LayerManager : MonoBehaviour
     public Layer[] layers;
     public Layer activeLayer; 
 
-    private IEnumerator enumerator;
-
     public static event Action<bool> onReelsStopped;
-    public static event Action<int> onLayerTransition; 
+    public static event Action<int> onLayerTransition;
+
+    private int currentReelIndex;
 
     private void Awake()
     {
         InitLayers();
-        enumerator = activeLayer.reels.GetEnumerator();
     }
 
     private void InitLayers()
@@ -62,19 +61,12 @@ public class LayerManager : MonoBehaviour
     // Todo: move reel start-stop logic elsewhere
     private bool AllReelsStopped()
     {
-        for (int i = 0; i < activeLayer.reels.Length; i++)
-        {
-            if (activeLayer.reels[i].isSpinning)
-            {
-                return false;
-            }
-        }
-        return true;
+        return activeLayer.reels.TrueForAll(r => !r.isSpinning);
     }
 
     private void StartAllReels()
     {
-        for (int i = 0; i < activeLayer.reels.Length; i++)
+        for (int i = 0; i < activeLayer.reels.Count; i++)
         {
             activeLayer.reels[i].ToggleState();
         }
@@ -112,34 +104,17 @@ public class LayerManager : MonoBehaviour
             if (AllReelsStopped())
             {
                 StartAllReels();
-                enumerator.MoveNext();
             }
             else
             {
-                Reel reel = enumerator.Current as Reel;
-                enumerator.MoveNext();
-
-                if (!reel.isDestroyed)
+                if (!activeLayer.reels[currentReelIndex].isDestroyed)
                 {
-                    reel.ToggleState();
-                }
-                else 
-                {
-                    try
-                    {
-                        // Skip the destroyed reel 
-                        enumerator.MoveNext();
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.Log(ex); 
-                    }
+                    activeLayer.reels[currentReelIndex].ToggleState();
                 }
 
                 // Check if the last reel in the sequence has been stopped 
-                if (reel.Equals(activeLayer.reels[activeLayer.reels.Length - 1]))
+                if (activeLayer.reels[currentReelIndex].Equals(activeLayer.reels[activeLayer.reels.Count - 1]))
                 {
-                    enumerator.Reset();
                     onReelsStopped?.Invoke(SymbolsMatch());
 
                     // Destroy any matching symbols after each spin round 
@@ -149,8 +124,11 @@ public class LayerManager : MonoBehaviour
                     {
                         MoveToNextLayer();
                     }
+                    currentReelIndex = 0;
+                    return; 
                 }
             }
+            currentReelIndex++; 
         }
     }
 

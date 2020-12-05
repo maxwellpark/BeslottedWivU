@@ -1,9 +1,10 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class Layer : MonoBehaviour
 {
     public GameObject reelPrefab;
-    public Reel[] reels;
+    public List<Reel> reels; 
     public Layer layerBelow;
 
     public bool isActive;
@@ -14,13 +15,13 @@ public class Layer : MonoBehaviour
 
     public void InitReels()
     {
-        reels = new Reel[SlotConstants.reelCount];
-        for (int i = 0; i < reels.Length; i++)
+        reels = new List<Reel>();
+        for (int i = 0; i < SlotConstants.reelCount; i++)
         {
             GameObject newReel = Instantiate(reelPrefab);
-            newReel.name = "Reel " + i + 1.ToString();
+            newReel.name = "Reel " + (i + 1).ToString();
             Reel reel = newReel.GetComponent<Reel>();
-            reels[i] = reel;
+            reels.Add(reel);
             reel.Init();
 
         }
@@ -29,13 +30,11 @@ public class Layer : MonoBehaviour
     // Todo: return only the current column?
     public Reel[] GetMatchingSymbolsUnderneath()
     {
-        LogLayerElements(reels);
-
         Reel[] matchingReels = new Reel[] { };
 
         if (layerBelow != null)
         {
-            for (int i = 0; i < reels.Length; i++)
+            for (int i = 0; i < reels.Count; i++)
             {
                 if(reels[i].symbolText.text.Equals(layerBelow.reels[i].symbolText.text))
                 {
@@ -58,9 +57,9 @@ public class Layer : MonoBehaviour
 
         for (int i = 0; i < matchingReels.Length; i++)
         {
-            int index = System.Array.IndexOf(reels, matchingReels[i]);
-            Destroy(reels[index].transform);
-            Debug.Log("Layer below length: " + layerBelow.reels.Length);
+            //int index = System.Array.IndexOf(reels, matchingReels[i]);
+            //Destroy(reels[index].transform);
+            //Debug.Log("Layer below length: " + layerBelow.reels.Length);
         }
     }
 
@@ -70,7 +69,7 @@ public class Layer : MonoBehaviour
     {
         if (layerBelow != null)
         {
-            for (int i = 0; i < reels.Length; i++)
+            for (int i = 0; i < reels.Count; i++)
             {
                 if (reels[i].symbolText.text.Equals(layerBelow.reels[i].symbolText.text))
                 {
