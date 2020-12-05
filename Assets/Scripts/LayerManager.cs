@@ -8,12 +8,10 @@ public class LayerManager : MonoBehaviour
     public Layer[] layers;
     public Layer activeLayer; 
 
-    // Todo: use this class to separate layer switching 
-    // instead of the individual layer class
-
     private IEnumerator enumerator;
 
     public static event Action<bool> onReelsStopped;
+    public static event Action<int> onLayerTransition; 
 
     private void Start()
     {
@@ -21,6 +19,7 @@ public class LayerManager : MonoBehaviour
         enumerator = activeLayer.reels.GetEnumerator();
     }
 
+    // Todo: rename to AllReelsStopped and move elsewhere
     private bool AllStopped()
     {
         for (int i = 0; i < activeLayer.reels.Length; i++)
@@ -56,8 +55,9 @@ public class LayerManager : MonoBehaviour
 
     private void MoveToNextLayer()
     {
-        activeLayer = layers[Array.IndexOf(layers, activeLayer) + 1];
-        // Todo: fire event that updates the arrow indicator in the UI
+        int newActiveLayerIndex = Array.IndexOf(layers, activeLayer) + 1;
+        activeLayer = layers[newActiveLayerIndex];
+        onLayerTransition?.Invoke(newActiveLayerIndex);
     }
 
     // Todo: encapsulate more of this logic 
