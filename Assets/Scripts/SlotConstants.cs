@@ -1,5 +1,8 @@
 ﻿public static class SlotConstants
 {
+    // Layers
+    public static int layerCount = 3; 
+
     // Reel symbols 
     public static string[] symbols = new string[] { "$", "%", "&" };
 
@@ -12,4 +15,6 @@
     public static int frameRate = 60; 
 
     // Todo: dynamically set the no. of symbols
+    // Todo: dynamically create layers based on layer count 
+    // Todo: increment layer count each round 
 }

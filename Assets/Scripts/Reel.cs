@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+// Represents the individual reels (spinning symbols) of the machine 
 public class Reel : MonoBehaviour
 {
     public bool isSpinning;
@@ -29,18 +30,25 @@ public class Reel : MonoBehaviour
         isSpinning = !isSpinning;
     }
 
-    private void FixedUpdate()
+    public void HandleSpin()
     {
         if (isSpinning)
         {
             if (counter <= 0)
             {
                 int index = System.Array.IndexOf(SlotConstants.symbols, symbolText.text);
-                symbolText.text = index < SlotConstants.symbols.Length - 1 ? SlotConstants.symbols[index + 1] : SlotConstants.symbols[0];
+
+                symbolText.text = index < SlotConstants.symbols.Length - 1 ?
+                    SlotConstants.symbols[index + 1] : SlotConstants.symbols[0];
 
                 counter = SlotConstants.spinSpeed;
             }
             counter--;
         }
+    }
+
+    private void FixedUpdate()
+    {
+        HandleSpin();
     }
 }
