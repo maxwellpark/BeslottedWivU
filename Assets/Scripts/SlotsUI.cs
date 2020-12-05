@@ -5,9 +5,10 @@ public class SlotsUI : MonoBehaviour
 {
     public LayerManager layerManager;
 
-    public GameObject layerGroupPrefab; 
     public GameObject[] layerGroups;
-    public GameObject reelPrefab; 
+    public GameObject layerGroupPrefab; 
+    public GameObject reelPrefab;
+    public GameObject indicatorPrefab; 
 
     public Text feedbackText;
 
@@ -20,7 +21,7 @@ public class SlotsUI : MonoBehaviour
 
     private void Start()
     {
-        InitLayerGroups();
+        InitLayerGroups(); 
         SlotMachine.onReelsStopped += UpdateFeedbackText;
     }
 
@@ -32,13 +33,16 @@ public class SlotsUI : MonoBehaviour
             layerGroups[i] = Instantiate(layerGroupPrefab, transform);
             layerGroups[i].name = "Layer Group " + i + 1.ToString();
 
+            GameObject newIndicator = Instantiate(indicatorPrefab, layerGroups[i].transform);
+            newIndicator.name = "Indicator " + i + 1.ToString();
+
             for (int j = 0; j < layerManager.layers[i].reels.Length; j++)
             {
                 GameObject newReel = Instantiate(reelPrefab, layerGroups[i].transform);
                 newReel.name = "Reel " + j + 1.ToString();
             }
         }
-
+        layerGroups[0].GetComponentInChildren<Text>().text = "->";
     }
 
     private void UpdateFeedbackText(bool symbolsMatch)
@@ -56,6 +60,7 @@ public class SlotsUI : MonoBehaviour
 
     private void UpdateLayerIndicator(int currentLayer)
     {
-
+        layerGroups[currentLayer - 1].GetComponentInChildren<Text>().text = string.Empty;
+        layerGroups[currentLayer].GetComponentInChildren<Text>().text = "->";
     }
 }
