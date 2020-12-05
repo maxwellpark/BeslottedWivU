@@ -19,6 +19,11 @@ public class LayerManager : MonoBehaviour
         enumerator = activeLayer.reels.GetEnumerator();
     }
 
+    private void InitLayers()
+    {
+            
+    }
+
     // Todo: rename to AllReelsStopped and move elsewhere
     private bool AllStopped()
     {

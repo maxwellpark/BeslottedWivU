@@ -2,10 +2,26 @@
 
 public class Layer : MonoBehaviour
 {
+    public GameObject reelPrefab;
     public Reel[] reels;
     public Layer layerBelow;
 
     public bool isActive;
+
+    private void Awake()
+    {
+        InitReels();
+    }
+
+    private void InitReels()
+    {
+        for (int i = 0; i < SlotConstants.reelCount; i++)
+        {
+            GameObject newReel = Instantiate(reelPrefab);
+            newReel.name = "Reel " + i + 1.ToString();
+            reels[i] = newReel.GetComponent<Reel>();
+        }
+    }
 
     // Todo: return only the current column?
     public Reel[] GetMatchingSymbolsUnderneath()

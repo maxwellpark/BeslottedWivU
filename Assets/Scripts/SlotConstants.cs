@@ -1,9 +1,10 @@
 ﻿public static class SlotConstants
 {
     // Layers
-    public static int layerCount = 3; 
+    public static int layerCount = 3;
 
-    // Reel symbols 
+    // Reels
+    public static int reelCount = 3; 
     public static string[] symbols = new string[] { "$", "%", "&" };
 
     // UI messages 

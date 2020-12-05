@@ -25,6 +25,7 @@ public class SlotsUI : MonoBehaviour
         SlotMachine.onReelsStopped += UpdateFeedbackText;
     }
 
+    // Todo: init the reels elsewhere (only init UI elements) 
     private void InitLayerGroups()
     {
         layerGroups = new GameObject[SlotConstants.layerCount];
