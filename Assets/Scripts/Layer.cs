@@ -11,8 +11,15 @@ public class Layer : MonoBehaviour
 
     public Reel[] GetMatchesUnderneath()
     {
+        Reel[] matchingReels = new Reel[] { };
 
-
-        return new Reel[] { };
+        for (int i = 0; i < reels.Length; i++)
+        {
+            if(reels[i].symbolText.text.Equals(layerBelow.reels[i].symbolText.text))
+            {
+                matchingReels[matchingReels.Length - 1] = reels[i];
+            }
+        }
+        return matchingReels;
     }
 }
