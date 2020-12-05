@@ -36,7 +36,9 @@ public class Reel : MonoBehaviour
             if (counter <= 0)
             {
                 int index = System.Array.IndexOf(SlotConstants.symbols, symbolText.text);
-                symbolText.text = index < SlotConstants.symbols.Length - 1 ? SlotConstants.symbols[index + 1] : SlotConstants.symbols[0];
+
+                symbolText.text = index < SlotConstants.symbols.Length - 1 ? 
+                    SlotConstants.symbols[index + 1] : SlotConstants.symbols[0];
 
                 counter = SlotConstants.spinSpeed;
             }
