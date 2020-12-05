@@ -3,6 +3,11 @@ using UnityEngine.UI;
 
 public class SlotsUI : MonoBehaviour
 {
+    public LayerManager layerManager;
+
+    public GameObject layerGroupPrefab; 
+    public GameObject[] layerGroups; 
+
     public Text feedbackText;
 
     // Todo: use sprites 
@@ -14,7 +19,19 @@ public class SlotsUI : MonoBehaviour
 
     private void Start()
     {
+
         SlotMachine.onReelsStopped += UpdateFeedbackText;
+    }
+
+    private void InitLayerGroups()
+    {
+        layerGroups = new GameObject[SlotConstants.layerCount];
+        for (int i = 0; i < layerGroups.Length; i++)
+        {
+            layerGroups[i] = Instantiate(layerGroupPrefab, transform);
+            layerGroups[i].name = "Layer Group " + i + 1.ToString();
+        }
+
     }
 
     private void UpdateFeedbackText(bool symbolsMatch)
