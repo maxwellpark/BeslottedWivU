@@ -29,7 +29,7 @@ public class Reel : MonoBehaviour
         isSpinning = !isSpinning;
     }
 
-    private void FixedUpdate()
+    public void HandleSpin()
     {
         if (isSpinning)
         {
@@ -37,12 +37,17 @@ public class Reel : MonoBehaviour
             {
                 int index = System.Array.IndexOf(SlotConstants.symbols, symbolText.text);
 
-                symbolText.text = index < SlotConstants.symbols.Length - 1 ? 
+                symbolText.text = index < SlotConstants.symbols.Length - 1 ?
                     SlotConstants.symbols[index + 1] : SlotConstants.symbols[0];
 
                 counter = SlotConstants.spinSpeed;
             }
             counter--;
         }
+    }
+
+    private void FixedUpdate()
+    {
+        HandleSpin();
     }
 }
