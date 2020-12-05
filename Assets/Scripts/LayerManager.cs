@@ -117,8 +117,24 @@ public class LayerManager : MonoBehaviour
             else
             {
                 Reel reel = enumerator.Current as Reel;
-                reel.ToggleState();
                 enumerator.MoveNext();
+
+                if (!reel.isDestroyed)
+                {
+                    reel.ToggleState();
+                }
+                else 
+                {
+                    try
+                    {
+                        // Skip the destroyed reel 
+                        enumerator.MoveNext();
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.Log(ex); 
+                    }
+                }
 
                 // Check if the last reel in the sequence has been stopped 
                 if (reel.Equals(activeLayer.reels[activeLayer.reels.Length - 1]))

@@ -8,7 +8,9 @@ public class Reel : MonoBehaviour
     public bool isDestroyed; 
     public float counter;
 
-    public string[] symbols; 
+    // Todo: change to List 
+    public string[] symbols;
+    
     public Text symbolText;
 
     public void Init()
