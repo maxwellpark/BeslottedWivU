@@ -3,6 +3,8 @@ using System.Collections;
 using System.Linq;
 using UnityEngine;
 
+// Todo: make this class handle higher-level operations 
+// LayerManager has superseded it.
 public class SlotMachine : MonoBehaviour
 {
     public Reel[] reels;
@@ -13,6 +15,7 @@ public class SlotMachine : MonoBehaviour
     void Start()
     {
         enumerator = reels.GetEnumerator();
+        Application.targetFrameRate = SlotConstants.frameRate;
     }
 
     private bool AllStopped()
@@ -43,27 +46,27 @@ public class SlotMachine : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0))
-        {
-            // Todo: determine whether to start all based on 
-            // the current enumerator value 
-            if (AllStopped())
-            {
-                StartAll();
-                enumerator.MoveNext();
-            }
-            else
-            {
-                Reel reel = enumerator.Current as Reel;
-                reel.ToggleState();
-                enumerator.MoveNext();
+        //if (Input.GetKeyDown(KeyCode.Mouse0))
+        //{
+        //    // Todo: determine whether to start all based on 
+        //    // the current enumerator value 
+        //    if (AllStopped())
+        //    {
+        //        StartAll();
+        //        enumerator.MoveNext();
+        //    }
+        //    else
+        //    {
+        //        Reel reel = enumerator.Current as Reel;
+        //        reel.ToggleState();
+        //        enumerator.MoveNext();
 
-                if (reel.Equals(reels[reels.Length -1]))
-                {
-                    enumerator.Reset();
-                    onReelsStopped?.Invoke(SymbolsMatch());
-                }
-            }
-        }
+        //        if (reel.Equals(reels[reels.Length -1]))
+        //        {
+        //            enumerator.Reset();
+        //            onReelsStopped?.Invoke(SymbolsMatch());
+        //        }
+        //    }
+        //}
     }
 }

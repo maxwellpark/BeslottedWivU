@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class LayerManager : MonoBehaviour
 {
+    public GameObject layerPrefab; 
     public Layer[] layers;
     public Layer activeLayer; 
 
@@ -13,10 +14,28 @@ public class LayerManager : MonoBehaviour
     public static event Action<bool> onReelsStopped;
     public static event Action<int> onLayerTransition; 
 
-    private void Start()
+    private void Awake()
     {
+        InitLayers();
         activeLayer = layers[0];
         enumerator = activeLayer.reels.GetEnumerator();
+    }
+
+    private void InitLayers()
+    {
+        layers = new Layer[SlotConstants.layerCount];
+
+        for (int i = 0; i < layers.Length; i++)
+        {
+            GameObject newLayerObject = Instantiate(layerPrefab);
+            newLayerObject.name = "Layer " + i + 1.ToString();
+
+            Layer newLayer = newLayerObject.GetComponent<Layer>();
+            newLayer.layerBelow = i < layers.Length - 1 ? layers[i + 1] : null;
+            layers[i] = newLayer;
+            
+            newLayer.InitReels();
+        }
     }
 
     // Todo: rename to AllReelsStopped and move elsewhere

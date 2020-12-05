@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 // Represents the individual reels (spinning symbols) of the machine 
@@ -10,18 +8,11 @@ public class Reel : MonoBehaviour
     public float counter; 
     public Text symbolText;
 
-
-    private void Awake()
-    {
-        Init();
-    }
-
-    private void Init()
+    public void Init()
     {
         isSpinning = false;
         counter = SlotConstants.spinSpeed;
         symbolText.text = SlotConstants.symbols[0];
-        Application.targetFrameRate = SlotConstants.frameRate;
     }
 
     public void ToggleState()
@@ -49,6 +40,6 @@ public class Reel : MonoBehaviour
 
     private void FixedUpdate()
     {
-        HandleSpin();
+        //HandleSpin();
     }
 }
