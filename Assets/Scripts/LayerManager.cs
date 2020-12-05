@@ -23,11 +23,18 @@ public class LayerManager : MonoBehaviour
 
     private void InitLayers()
     {
-        for (int i = 0; i < SlotConstants.layerCount; i++)
+        layers = new Layer[SlotConstants.layerCount];
+
+        for (int i = 0; i < layers.Length; i++)
         {
-            GameObject newLayer = Instantiate(layerPrefab);
-            newLayer.name = "Layer " + i + 1.ToString();
-            layers[i] = newLayer.GetComponent<Layer>();
+            GameObject newLayerObject = Instantiate(layerPrefab);
+            newLayerObject.name = "Layer " + i + 1.ToString();
+
+            Layer newLayer = newLayerObject.GetComponent<Layer>();
+            newLayer.layerBelow = i < layers.Length - 1 ? layers[i + 1] : null;
+            layers[i] = newLayer;
+            
+            newLayer.InitReels();
         }
     }
 

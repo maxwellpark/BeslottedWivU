@@ -10,16 +10,19 @@ public class Layer : MonoBehaviour
 
     private void Awake()
     {
-        InitReels();
     }
 
-    private void InitReels()
+    public void InitReels()
     {
-        for (int i = 0; i < SlotConstants.reelCount; i++)
+        reels = new Reel[SlotConstants.reelCount];
+        for (int i = 0; i < reels.Length; i++)
         {
             GameObject newReel = Instantiate(reelPrefab);
             newReel.name = "Reel " + i + 1.ToString();
-            reels[i] = newReel.GetComponent<Reel>();
+            Reel reel = newReel.GetComponent<Reel>();
+            reels[i] = reel;
+            reel.Init();
+
         }
     }
 
@@ -28,14 +31,17 @@ public class Layer : MonoBehaviour
     {
         Reel[] matchingReels = new Reel[] { };
 
-        for (int i = 0; i < reels.Length; i++)
+        if (layerBelow != null)
         {
-            if(reels[i].symbolText.text.Equals(layerBelow.reels[i].symbolText.text))
+            for (int i = 0; i < reels.Length; i++)
             {
-                matchingReels[matchingReels.Length - 1] = reels[i];
+                if(reels[i].symbolText.text.Equals(layerBelow.reels[i].symbolText.text))
+                {
+                    matchingReels[matchingReels.Length - 1] = reels[i];
+                }
             }
         }
-        return matchingReels;
+        return matchingReels; 
     }
 
     public void DestroyReelsBelow() 
