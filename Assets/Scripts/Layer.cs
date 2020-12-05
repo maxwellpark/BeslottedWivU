@@ -22,4 +22,13 @@ public class Layer : MonoBehaviour
         }
         return matchingReels;
     }
+
+    public void DestroyReelsBelow(Reel[] matchingReels) 
+    {
+        for (int i = 0; i < matchingReels.Length; i++)
+        {
+            Destroy(reels[i].transform);
+            Debug.Log(layerBelow.reels.Length);
+        }
+    }
 }
