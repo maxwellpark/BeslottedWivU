@@ -14,6 +14,10 @@ public class Layer : MonoBehaviour
 
     public bool isActive;
 
+    private void Awake()
+    {
+    }
+
     public void InitReels()
     {
         reels = new List<Reel>();
@@ -80,7 +84,7 @@ public class Layer : MonoBehaviour
             }
         }
     }
-
+        
     // Todo: Choose whether to destroy all at the end of round, 
     // or individually after each reel stops 
     public void DestroyMatchingSymbol()

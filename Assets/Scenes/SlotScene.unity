@@ -494,8 +494,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   layerManager: {fileID: 868318780}
   layerGroups: []
-  layerGroupPrefab: {fileID: 0}
-  reelPrefab: {fileID: 0}
+  layerGroupPrefab: {fileID: 632163345578194629, guid: ec0f9ace05affab4b8637eb7031997f5,
+    type: 3}
+  reelPrefab: {fileID: 596241516475075558, guid: 75b17d8e9c4472f479a084180baa3017,
+    type: 3}
   indicatorPrefab: {fileID: 3089663692725863491, guid: 4886f6056620cc4409811564bfc44d3a,
     type: 3}
   feedbackText: {fileID: 0}

@@ -29,6 +29,7 @@ public class LayerManager : MonoBehaviour
             newLayerObject.name = "Layer " + (i + 1).ToString();
 
             Layer newLayer = newLayerObject.GetComponent<Layer>();
+            newLayer.layerManager = this;
             //newLayer.layerBelow = i < layers.Length - 1 ? layers[i + 1] : null;
             layers[i] = newLayer;
             
@@ -105,7 +106,6 @@ public class LayerManager : MonoBehaviour
             {
                 activeLayer.reels[currentReelIndex].ToggleState();
 
-                // Todo: destroy while maintaining the same spin order
                 activeLayer.DestroyMatchingSymbol();
 
                 // Check if the last reel in the sequence has been stopped 
@@ -120,7 +120,7 @@ public class LayerManager : MonoBehaviour
                     currentReelIndex = 0;
                     return; 
                 }
-                currentReelIndex++; // interferes with destroy 
+                currentReelIndex++;
             }
         }
     }

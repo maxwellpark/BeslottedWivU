@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 
 // Represents the individual reels (spinning symbols) of the machine 
@@ -24,25 +25,35 @@ public class Reel : MonoBehaviour
 
     private void InitSymbols()
     {
-        int indexRange = SlotConstants.symbols.Length - 1;
-        int count = indexRange; 
-        symbols = new string[indexRange];
-
-        // Shuffle elements  
-        for (int i = 0; i < count; i++)
+        symbols = DeepCopySymbols(SlotConstants.symbols);
+        RandomiseSymbols();
+        for (int i = 0; i < symbols.Length; i++)
         {
-            int randomIndex = Random.Range(0, indexRange);
-            symbols[i] = SlotConstants.symbols[randomIndex];
-            indexRange--;
+            Debug.Log("Symbol at index " + i + ": " + symbols[i]);
         }
     }
 
     // Todo: do we need a symbols class?
     private void RandomiseSymbols()
     {
-
+        for (int i = 0; i < symbols.Length; i++)
+        {
+            string temp = symbols[i];
+            int randomIndex = Random.Range(0, symbols.Length - 1);
+            symbols[i] = symbols[randomIndex];
+            symbols[randomIndex] = temp;
+        }
     }
 
+    private string[] DeepCopySymbols(string[] symbols)
+    {
+        string[] copiedSymbols = new string[symbols.Length];
+        for (int i = 0; i < copiedSymbols.Length; i++)
+        {
+            copiedSymbols[i] = symbols[i];
+        }
+        return copiedSymbols;
+    }
 
     public void ToggleState()
     {
