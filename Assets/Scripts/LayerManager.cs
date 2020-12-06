@@ -104,13 +104,13 @@ public class LayerManager : MonoBehaviour
             {
                 activeLayer.reels[currentReelIndex].ToggleState();
 
+                // Todo: destroy while maintaining the same spin order
+                activeLayer.DestroyMatchingSymbol();
+
                 // Check if the last reel in the sequence has been stopped 
                 if (currentReelIndex >= activeLayer.reels.Count - 1)
                 {
                     onReelsStopped?.Invoke(SymbolsMatch());
-
-                    // Destroy any matching symbols after each spin round 
-                    activeLayer.DestroyMatchingSymbol();
 
                     if (LayerIsDestroyed())
                     {
@@ -119,12 +119,12 @@ public class LayerManager : MonoBehaviour
                     currentReelIndex = 0;
                     return; 
                 }
-                currentReelIndex++; 
+                currentReelIndex++; // interferes with destroy 
             }
         }
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         HandleSpin();
     }

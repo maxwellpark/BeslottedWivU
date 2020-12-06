@@ -43,7 +43,7 @@ public class Reel : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         HandleSpin();
     }

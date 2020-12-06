@@ -87,9 +87,14 @@ public class Layer : MonoBehaviour
             // of tracking by index
             if (reels[index].symbolText.text.Equals(layerBelow.reels[index].symbolText.text))
             {
+                reels[index].isDestroyed = true; 
                 reels[index].symbolText.color = Color.red; 
                 reels.RemoveAt(index);
-                Debug.Log("New reels count: " + reels.Count);
+
+                // Account for the reduction in list size 
+                LayerManager.currentReelIndex--;
+
+                Debug.Log("New reels size: " + reels.Count);
             }
         }
     }

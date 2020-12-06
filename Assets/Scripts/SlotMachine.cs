@@ -19,6 +19,8 @@ public class SlotMachine : MonoBehaviour
         Application.targetFrameRate = SlotConstants.frameRate;
     }
 
+
+
     private bool AllStopped()
     {
         for (int i = 0; i < reels.Length; i++)
