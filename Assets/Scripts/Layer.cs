@@ -4,8 +4,13 @@ using UnityEngine;
 public class Layer : MonoBehaviour
 {
     public GameObject reelPrefab;
-    public List<Reel> reels; 
+    public List<Reel> reels;
+    public LayerManager layerManager;
     public Layer layerBelow;
+    //public Layer layerAbove;
+
+    // Todo: put this into LayerManager
+    public static event System.Action onBottomLayerCleared;
 
     public bool isActive;
 
@@ -53,8 +58,8 @@ public class Layer : MonoBehaviour
 
         for (int i = 0; i < matchingReels.Length; i++)
         {
-            //int index = System.Array.IndexOf(reels, matchingReels[i]);
-            //Destroy(reels[index].transform);
+            //int reelIndex = System.Array.IndexOf(reels, matchingReels[i]);
+            //Destroy(reels[reelIndex].transform);
             //Debug.Log("Layer below length: " + layerBelow.reels.Length);
         }
     }
@@ -80,21 +85,46 @@ public class Layer : MonoBehaviour
     // or individually after each reel stops 
     public void DestroyMatchingSymbol()
     {
-        int index = LayerManager.currentReelIndex;
+        // Todo: just get a reference to the reel above/below...
+        int reelIndex = layerManager.currentReelIndex;
+
+        // Todo: encapsulate this in the Manager class 
+        // Make a GetLayerIndex method
+        int layerIndex = System.Array.IndexOf(layerManager.layers, layerManager.layers);
+
         if (layerBelow != null)
         {
             // Todo: store the currently spinning reel instead 
-            // of tracking by index
-            if (reels[index].symbolText.text.Equals(layerBelow.reels[index].symbolText.text))
+            // of tracking by reelIndex
+            if (reels[reelIndex].symbolText.text.Equals(layerBelow.reels[reelIndex].symbolText.text))
             {
-                reels[index].isDestroyed = true; 
-                reels[index].symbolText.color = Color.red; 
-                reels.RemoveAt(index);
+                // Todo: encapsulate this in the Reel or Layer class
+                reels[reelIndex].isDestroyed = true; 
+                reels[reelIndex].symbolText.color = Color.red; 
+                reels.RemoveAt(reelIndex);
 
                 // Account for the reduction in list size 
-                LayerManager.currentReelIndex--;
+                layerManager.currentReelIndex--;
 
                 Debug.Log("New reels size: " + reels.Count);
+            }
+        }
+        // We are at the bottom layer if this executes
+        else
+        {
+            List<Reel> reelsAbove = layerManager.layers[layerIndex].reels; 
+
+            // Todo: track entirely by reelIndex instead of layerBelow referencing  
+            // Find out how to do this with getting reference to the layer manager
+            if (reels[reelIndex].symbolText.text.Equals(reelsAbove[reelIndex].symbolText.text))
+            {
+                reelsAbove[reelIndex].isDestroyed = true;
+                reelsAbove[reelIndex].symbolText.color = Color.red;
+                reelsAbove.RemoveAt(reelIndex);
+            }
+            if (reelsAbove.Count <= 0)
+            {
+                onBottomLayerCleared?.Invoke();
             }
         }
     }

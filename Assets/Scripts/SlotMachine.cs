@@ -15,7 +15,6 @@ public class SlotMachine : MonoBehaviour
 
     void Start()
     {
-        enumerator = reels.GetEnumerator();
         Application.targetFrameRate = SlotConstants.frameRate;
     }
 

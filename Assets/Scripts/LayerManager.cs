@@ -9,7 +9,7 @@ public class LayerManager : MonoBehaviour
     public Layer[] layers;
     public Layer activeLayer; 
 
-    public static int currentReelIndex;
+    public int currentReelIndex;
 
     public static event Action<bool> onReelsStopped;
     public static event Action<int> onLayerTransition;
@@ -70,6 +70,7 @@ public class LayerManager : MonoBehaviour
     }
 
     // Todo: put this in Reel or wherever is most suitable 
+    // Make this a part of the Layer MatchSymbols method?
     private bool SymbolsMatch()
     {
         string symbolToMatch = activeLayer.reels[0].symbolText.text;
