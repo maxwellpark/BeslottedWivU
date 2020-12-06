@@ -18,9 +18,31 @@ public class Reel : MonoBehaviour
     {
         isSpinning = false;
         counter = SlotConstants.spinSpeed;
-        symbols = SlotConstants.symbols;
-        symbolText.text = SlotConstants.symbols[0];
+        InitSymbols();
+        symbolText.text = symbols[0];
     }
+
+    private void InitSymbols()
+    {
+        int indexRange = SlotConstants.symbols.Length - 1;
+        int count = indexRange; 
+        symbols = new string[indexRange];
+
+        // Shuffle elements  
+        for (int i = 0; i < count; i++)
+        {
+            int randomIndex = Random.Range(0, indexRange);
+            symbols[i] = SlotConstants.symbols[randomIndex];
+            indexRange--;
+        }
+    }
+
+    // Todo: do we need a symbols class?
+    private void RandomiseSymbols()
+    {
+
+    }
+
 
     public void ToggleState()
     {

@@ -13,12 +13,15 @@ public class SlotMachine : MonoBehaviour
 
     public static event Action<bool> onReelsStopped; 
 
-    void Start()
+    private void Start()
     {
         Application.targetFrameRate = SlotConstants.frameRate;
     }
 
+    private void ResetMachine()
+    {
 
+    }
 
     private bool AllStopped()
     {

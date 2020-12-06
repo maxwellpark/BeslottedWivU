@@ -21,6 +21,7 @@ public class SlotsUI : MonoBehaviour
 
     private void Start()
     {
+        //layerManager = GetComponent<LayerManager>();
         InitLayerGroups(); 
         SlotMachine.onReelsStopped += UpdateFeedbackText;
     }
