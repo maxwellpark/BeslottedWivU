@@ -9,10 +9,6 @@ public class Layer : MonoBehaviour
 
     public bool isActive;
 
-    private void Awake()
-    {
-    }
-
     public void InitReels()
     {
         reels = new List<Reel>();
@@ -76,6 +72,24 @@ public class Layer : MonoBehaviour
                     reels[i].isDestroyed = true;
                     reels[i].symbolText.color = Color.red;
                 }
+            }
+        }
+    }
+
+    // Todo: Choose whether to destroy all at the end of round, 
+    // or individually after each reel stops 
+    public void DestroyMatchingSymbol()
+    {
+        int index = LayerManager.currentReelIndex;
+        if (layerBelow != null)
+        {
+            // Todo: store the currently spinning reel instead 
+            // of tracking by index
+            if (reels[index].symbolText.text.Equals(layerBelow.reels[index].symbolText.text))
+            {
+                reels[index].symbolText.color = Color.red; 
+                reels.RemoveAt(index);
+                Debug.Log("New reels count: " + reels.Count);
             }
         }
     }

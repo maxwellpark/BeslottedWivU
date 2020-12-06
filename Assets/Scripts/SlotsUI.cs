@@ -37,7 +37,7 @@ public class SlotsUI : MonoBehaviour
             GameObject newIndicator = Instantiate(indicatorPrefab, layerManager.layers[i].transform);
             newIndicator.name = "Indicator " + (i + 1).ToString();
 
-            for (int j = 0; j < layerManager.layers[i].reels.Length; j++)
+            for (int j = 0; j < layerManager.layers[i].reels.Count; j++)
             {
                 layerManager.layers[i].reels[j].transform.parent = layerGroups[i].transform;
             }

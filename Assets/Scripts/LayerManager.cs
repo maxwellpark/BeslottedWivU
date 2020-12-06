@@ -9,10 +9,10 @@ public class LayerManager : MonoBehaviour
     public Layer[] layers;
     public Layer activeLayer; 
 
+    public static int currentReelIndex;
+
     public static event Action<bool> onReelsStopped;
     public static event Action<int> onLayerTransition;
-
-    private int currentReelIndex;
 
     private void Awake()
     {
@@ -66,10 +66,7 @@ public class LayerManager : MonoBehaviour
 
     private void StartAllReels()
     {
-        for (int i = 0; i < activeLayer.reels.Count; i++)
-        {
-            activeLayer.reels[i].ToggleState();
-        }
+        activeLayer.reels.ForEach(r => r.isSpinning = true);
     }
 
     // Todo: put this in Reel or wherever is most suitable 
@@ -96,29 +93,24 @@ public class LayerManager : MonoBehaviour
 
     // Todo: encapsulate more of this logic 
     private void HandleSpin()
-    {
+    {   
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            // Todo: determine whether to start all based on 
-            // the current enumerator value 
             if (AllReelsStopped())
             {
                 StartAllReels();
             }
             else
             {
-                if (!activeLayer.reels[currentReelIndex].isDestroyed)
-                {
-                    activeLayer.reels[currentReelIndex].ToggleState();
-                }
+                activeLayer.reels[currentReelIndex].ToggleState();
 
                 // Check if the last reel in the sequence has been stopped 
-                if (activeLayer.reels[currentReelIndex].Equals(activeLayer.reels[activeLayer.reels.Count - 1]))
+                if (currentReelIndex >= activeLayer.reels.Count - 1)
                 {
                     onReelsStopped?.Invoke(SymbolsMatch());
 
                     // Destroy any matching symbols after each spin round 
-                    activeLayer.DestroyMatchingSymbols();
+                    activeLayer.DestroyMatchingSymbol();
 
                     if (LayerIsDestroyed())
                     {
@@ -127,8 +119,8 @@ public class LayerManager : MonoBehaviour
                     currentReelIndex = 0;
                     return; 
                 }
+                currentReelIndex++; 
             }
-            currentReelIndex++; 
         }
     }
 

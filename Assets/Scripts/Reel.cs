@@ -9,6 +9,7 @@ public class Reel : MonoBehaviour
     public float counter;
 
     // Todo: change to List 
+    // Then we can add or remove while playing 
     public string[] symbols;
     
     public Text symbolText;
@@ -17,6 +18,7 @@ public class Reel : MonoBehaviour
     {
         isSpinning = false;
         counter = SlotConstants.spinSpeed;
+        symbols = SlotConstants.symbols;
         symbolText.text = SlotConstants.symbols[0];
     }
 
