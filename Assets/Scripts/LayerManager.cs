@@ -45,17 +45,19 @@ public class LayerManager : MonoBehaviour
     // Shouldn't need to wait, as they are reference types 
     private void SetLayersBelow()
     {
-        for (int i = 0; i < layers.Length; i++)
+        for (int i = 0; i < layers.Length - 1; i++)
         {
-            try
-            {
-                layers[i].layerBelow = layers[i + 1];
-            }
-            catch (IndexOutOfRangeException ex)
-            {
-                Debug.Log(ex); 
-                layers[i].layerBelow = null; 
-            }
+            layers[i].layerBelow = layers[i + 1];
+
+            //try
+            //{
+            //    layers[i].layerBelow = layers[i + 1];
+            //}
+            //catch (IndexOutOfRangeException ex)
+            //{
+            //    Debug.Log(ex); 
+            //    layers[i].layerBelow = null; 
+            //}
         }
     }
 
