@@ -5,7 +5,7 @@ public class Layer : MonoBehaviour
 {
     public GameObject reelPrefab;
     public List<Reel> reels;
-    public LayerManager layerManager;
+    public LayerManager layerManager; // better way to get ref?
     public Layer layerBelow;
     //public Layer layerAbove;
 
@@ -94,7 +94,7 @@ public class Layer : MonoBehaviour
 
         // Todo: encapsulate this in the Manager class 
         // Make a GetLayerIndex method
-        int layerIndex = System.Array.IndexOf(layerManager.layers, layerManager.layers);
+        //int layerIndex = System.Array.IndexOf(layerManager.layers, layerManager.layers);
 
         if (layerBelow != null)
         {
@@ -116,7 +116,8 @@ public class Layer : MonoBehaviour
         // We are at the bottom layer if this executes
         else
         {
-            List<Reel> reelsAbove = layerManager.layers[layerIndex].reels; 
+            int layerAboveIndex = layerManager.layers.Length - 2;
+            List<Reel> reelsAbove = layerManager.layers[layerAboveIndex].reels; 
 
             // Todo: track entirely by reelIndex instead of layerBelow referencing  
             // Find out how to do this with getting reference to the layer manager

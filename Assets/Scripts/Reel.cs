@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 // Represents the individual reels (spinning symbols) of the machine 
@@ -12,7 +11,7 @@ public class Reel : MonoBehaviour
     // Todo: change to List 
     // Then we can add or remove while playing 
     public string[] symbols;
-    
+
     public Text symbolText;
 
     public void Init()
@@ -26,7 +25,7 @@ public class Reel : MonoBehaviour
     private void InitSymbols()
     {
         symbols = DeepCopySymbols(SlotConstants.symbols);
-        RandomiseSymbols();
+        RandomiseSymbols(symbols);
         for (int i = 0; i < symbols.Length; i++)
         {
             Debug.Log("Symbol at index " + i + ": " + symbols[i]);
@@ -34,7 +33,7 @@ public class Reel : MonoBehaviour
     }
 
     // Todo: do we need a symbols class?
-    private void RandomiseSymbols()
+    private string[] RandomiseSymbols(string[] symbols)
     {
         for (int i = 0; i < symbols.Length; i++)
         {
@@ -43,6 +42,7 @@ public class Reel : MonoBehaviour
             symbols[i] = symbols[randomIndex];
             symbols[randomIndex] = temp;
         }
+        return symbols;
     }
 
     private string[] DeepCopySymbols(string[] symbols)
