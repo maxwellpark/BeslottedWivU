@@ -3,8 +3,9 @@ using System.Collections;
 using System.Linq;
 using UnityEngine;
 
-// Todo: make this class handle higher-level operations 
+// Todo: make this class handle higher-level operations. 
 // LayerManager has superseded it.
+// Remove redundant code. 
 public class SlotMachine : MonoBehaviour
 {
     public Reel[] reels;
@@ -12,10 +13,14 @@ public class SlotMachine : MonoBehaviour
 
     public static event Action<bool> onReelsStopped; 
 
-    void Start()
+    private void Start()
     {
-        enumerator = reels.GetEnumerator();
         Application.targetFrameRate = SlotConstants.frameRate;
+    }
+
+    private void ResetMachine()
+    {
+
     }
 
     private bool AllStopped()
