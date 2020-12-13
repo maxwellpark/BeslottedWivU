@@ -48,16 +48,6 @@ public class LayerManager : MonoBehaviour
         for (int i = 0; i < layers.Length - 1; i++)
         {
             layers[i].layerBelow = layers[i + 1];
-
-            //try
-            //{
-            //    layers[i].layerBelow = layers[i + 1];
-            //}
-            //catch (IndexOutOfRangeException ex)
-            //{
-            //    Debug.Log(ex); 
-            //    layers[i].layerBelow = null; 
-            //}
         }
     }
 
@@ -72,6 +62,23 @@ public class LayerManager : MonoBehaviour
         activeLayer.reels.ForEach(r => r.isSpinning = true);
     }
 
+    private int GetIndexIncrement()
+    {
+        int increment = 1;
+        for (int i = currentReelIndex; i < activeLayer.reels.Count - 1; i++)
+        {
+            if (activeLayer.reels[i + 1].isDestroyed) 
+            {
+                increment++;
+            }
+            else
+            {
+                return increment; 
+            }
+        }
+        return increment; 
+    }
+
     // Todo: put this in Reel or wherever is most suitable 
     // Make this a part of the Layer MatchSymbols method?
     private bool SymbolsMatch()
@@ -82,10 +89,7 @@ public class LayerManager : MonoBehaviour
 
     private bool LayerIsDestroyed()
     {
-        return activeLayer.reels.All(r => r.symbolText.color.Equals(Color.red));
-
-        //Debug.Log("Active layer length: " + activeLayer.reels.Length);
-        //return activeLayer.reels.Length <= 0; 
+        return activeLayer.reels.All(r => r.isDestroyed);
     }
 
     private void MoveToNextLayer()
@@ -122,7 +126,8 @@ public class LayerManager : MonoBehaviour
                     currentReelIndex = 0;
                     return; 
                 }
-                currentReelIndex++;
+                // Skip reels that have already been destroyed
+                currentReelIndex += GetIndexIncrement();
             }
         }
     }

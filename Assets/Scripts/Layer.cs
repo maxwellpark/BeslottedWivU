@@ -105,14 +105,11 @@ public class Layer : MonoBehaviour
                 // Todo: encapsulate this in the Reel or Layer class
                 reels[reelIndex].isDestroyed = true; 
                 reels[reelIndex].symbolText.color = Color.red; 
-                reels.RemoveAt(reelIndex);
-
-                // Account for the reduction in list size 
-                layerManager.currentReelIndex--;
 
                 Debug.Log("New reels size: " + reels.Count);
             }
         }
+
         // We are at the bottom layer if this executes
         else
         {
