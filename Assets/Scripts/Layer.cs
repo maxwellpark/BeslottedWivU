@@ -27,8 +27,7 @@ public class Layer : MonoBehaviour
             newReel.name = "Reel " + (i + 1).ToString();
             Reel reel = newReel.GetComponent<Reel>();
             reels.Add(reel);
-            reel.Init();
-
+            reel.Init(i);
         }
     }
 
@@ -104,7 +103,9 @@ public class Layer : MonoBehaviour
             {
                 // Todo: encapsulate this in the Reel or Layer class
                 reels[reelIndex].isDestroyed = true; 
-                reels[reelIndex].symbolText.color = Color.red; 
+                reels[reelIndex].symbolText.color = Color.red;
+
+                reels.RemoveAt(reelIndex);
 
                 Debug.Log("New reels size: " + reels.Count);
             }

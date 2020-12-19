@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ public class LayerManager : MonoBehaviour
     public Layer activeLayer; 
 
     public int currentReelIndex;
+    // Store a list of not-destroyed reels, then iterate through?
 
     public static event Action<bool> onReelsStopped;
     public static event Action<int> onLayerTransition;
@@ -79,6 +81,49 @@ public class LayerManager : MonoBehaviour
         return increment; 
     }
 
+    // Todo: Refactor this 
+    // Can we just return the reel, and then check above/below based on that?
+    private int GetNextReelIndex()
+    {
+        // Can we make this work for end-of-round stage too?
+        int nextHighest = activeLayer.reels.FirstOrDefault(r => !r.isDestroyed && r.index > currentReelIndex).index;
+        return nextHighest > 0 ? nextHighest : activeLayer.reels.FirstOrDefault(r => !r.isDestroyed).index;
+    }
+
+    // Todo: null checks
+    private int GetNextReelIndexFor()
+    {
+        for (int i = activeLayer.reels.Count - 1; i >= 0; i--)
+        {
+            if (!activeLayer.reels[i].isDestroyed && activeLayer.reels[i].isSpinning 
+                && activeLayer.reels[i] != activeLayer.reels[currentReelIndex])
+            {
+                return i;
+            }
+        }
+        return currentReelIndex;
+    }
+
+    private int GetNextIndexInSubLists()
+    {
+        IEnumerable<Reel> lastPortion = activeLayer.reels.Where(r => r.index > currentReelIndex);
+        Reel reelInLastPortion = lastPortion.FirstOrDefault(r => !r.isDestroyed);
+        if (reelInLastPortion!= null) //nc?
+        {
+            return reelInLastPortion.index;
+        }
+        else
+        {
+            IEnumerable<Reel> firstPortion = activeLayer.reels.Where(r => r.index <= currentReelIndex);
+            Reel reelInFirstPortion = firstPortion.FirstOrDefault(r => !r.isDestroyed);
+            if (reelInFirstPortion != null)
+            {
+                return reelInFirstPortion.index;
+            }
+        }
+        return 0;
+    }
+
     // Todo: put this in Reel or wherever is most suitable 
     // Make this a part of the Layer MatchSymbols method?
     private bool SymbolsMatch()
@@ -104,6 +149,7 @@ public class LayerManager : MonoBehaviour
     {   
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
+            // Check to see if we are beginning the spin round
             if (AllReelsStopped())
             {
                 StartAllReels();
@@ -111,11 +157,10 @@ public class LayerManager : MonoBehaviour
             else
             {
                 activeLayer.reels[currentReelIndex].ToggleState();
-
                 activeLayer.DestroyMatchingSymbol();
 
-                // Check if the last reel in the sequence has been stopped 
-                if (currentReelIndex >= activeLayer.reels.Count - 1)
+                // Check to see if we are ending the spin round
+                if (AllReelsStopped())
                 {
                     onReelsStopped?.Invoke(SymbolsMatch());
 
@@ -123,11 +168,20 @@ public class LayerManager : MonoBehaviour
                     {
                         MoveToNextLayer();
                     }
-                    currentReelIndex = 0;
-                    return; 
+                    //currentReelIndex = 0;
+                    //return; 
                 }
                 // Skip reels that have already been destroyed
-                currentReelIndex += GetIndexIncrement();
+                //currentReelIndex = GetNextReelIndexFor();
+                //currentReelIndex += GetIndexIncrement();
+                //currentReelIndex = GetNextReelIndex();
+
+                // Determine next reel to cycle to 
+                if (activeLayer.reels.Count() <= 1)
+                {
+                    currentReelIndex = GetNextReelIndexFor();
+                }
+                // Don't change index if there's only one reel remaining
             }
         }
     }

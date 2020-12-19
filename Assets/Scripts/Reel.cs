@@ -5,7 +5,8 @@ using UnityEngine.UI;
 public class Reel : MonoBehaviour
 {
     public bool isSpinning;
-    public bool isDestroyed; 
+    public bool isDestroyed;
+    public int index;
     public float counter;
 
     // Todo: change to List 
@@ -14,9 +15,11 @@ public class Reel : MonoBehaviour
 
     public Text symbolText;
 
-    public void Init()
+    public void Init(int i)
     {
         isSpinning = false;
+        isDestroyed = false;
+        index = i;
         counter = SlotConstants.spinSpeed;
         InitSymbols();
         symbolText.text = symbols[0];
